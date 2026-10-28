@@ -1,12 +1,37 @@
 import { AppState } from '../types';
 import { INITIAL_STATE } from '../data/sampleData';
 
-const STORAGE_KEY = 'campusmate_studyhub_v1';
+const STORAGE_KEY = 'campusmate_studyhub_v2_ayush';
 
 export function loadAppState(): AppState {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    let raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
+      // Check if previous v1 storage exists
+      const v1Raw = localStorage.getItem('campusmate_studyhub_v1');
+      if (v1Raw) {
+        try {
+          const parsedV1 = JSON.parse(v1Raw);
+          // If previous user was generic or Alex Rivers, migrate to Ayush Kumar
+          if (parsedV1?.profile) {
+            parsedV1.profile.displayName = 'Ayush Kumar';
+            parsedV1.profile.branch = 'Internet of Things (IoT)';
+            parsedV1.profile.semester = 'Semester 3';
+          }
+          return {
+            ...INITIAL_STATE,
+            ...parsedV1,
+            profile: {
+              ...INITIAL_STATE.profile,
+              displayName: 'Ayush Kumar',
+              branch: 'Internet of Things (IoT)',
+              semester: 'Semester 3'
+            }
+          };
+        } catch (e) {
+          return INITIAL_STATE;
+        }
+      }
       return INITIAL_STATE;
     }
     const parsed = JSON.parse(raw);
@@ -20,11 +45,18 @@ export function loadAppState(): AppState {
       Array.isArray(parsed.exams) &&
       parsed.profile
     ) {
+      const profile = {
+        ...INITIAL_STATE.profile,
+        ...parsed.profile
+      };
+      if (profile.displayName === 'Alex Rivers' || profile.displayName === 'Student') {
+        profile.displayName = 'Ayush Kumar';
+        profile.branch = 'Internet of Things (IoT)';
+        profile.semester = 'Semester 3';
+      }
+
       return {
-        profile: {
-          ...INITIAL_STATE.profile,
-          ...parsed.profile
-        },
+        profile,
         subjects: parsed.subjects || INITIAL_STATE.subjects,
         notes: parsed.notes || INITIAL_STATE.notes,
         pyqs: Array.isArray(parsed.pyqs) ? parsed.pyqs : INITIAL_STATE.pyqs,

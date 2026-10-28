@@ -56,7 +56,17 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({
     'Semester 8'
   ];
 
+  // Sync input fields if state.profile changes
+  React.useEffect(() => {
+    setDisplayName(state.profile.displayName);
+    setSemester(state.profile.semester);
+    setBranch(state.profile.branch);
+    setCollegeName(state.profile.collegeName || '');
+    setTargetGpa(state.profile.targetGpa || '');
+  }, [state.profile]);
+
   const BRANCHES = [
+    'Internet of Things (IoT)',
     'Computer Science & Engineering',
     'Information Technology',
     'Electronics & Communication',

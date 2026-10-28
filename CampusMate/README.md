@@ -9,6 +9,7 @@ Built for college student productivity competitions, **CampusMate** is a respons
 - **Pomodoro Focus Studio**: 25/5/15 intervals powered by native Web Audio synthesizer chimes with zero external audio assets.
 - **Study Analytics**: Real data visual metrics including SVG task distribution donut and weekly study velocity.
 - **Student Profile & Portable Backups**: Complete JSON backup export and validated schema restore.
+- **Configured Profile**: **Ayush Kumar** · **Internet of Things (IoT)** · **Semester 3**
 
 ---
 

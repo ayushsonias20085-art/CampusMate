@@ -9,16 +9,16 @@
   // --- Initial State and Sample Data ---
   const INITIAL_DATA = {
     profile: {
-      displayName: 'Alex Rivers',
-      semester: 'Semester 5',
-      branch: 'Computer Science & Engineering',
+      displayName: 'Ayush Kumar',
+      semester: 'Semester 3',
+      branch: 'Internet of Things (IoT)',
       collegeName: 'National Institute of Technology'
     },
     subjects: [
       { id: 'sub-1', name: 'Data Structures & Algorithms', code: 'CS201', color: '#4F46E5' },
-      { id: 'sub-2', name: 'Database Management Systems', code: 'CS301', color: '#0284C7' },
-      { id: 'sub-3', name: 'Operating Systems', code: 'CS302', color: '#7C3AED' },
-      { id: 'sub-4', name: 'Computer Networks', code: 'CS401', color: '#0D9488' }
+      { id: 'sub-2', name: 'Microcontrollers & Embedded Systems', code: 'IOT301', color: '#0284C7' },
+      { id: 'sub-3', name: 'Sensors, Actuators & Interfacing', code: 'IOT302', color: '#7C3AED' },
+      { id: 'sub-4', name: 'IoT Communication Protocols', code: 'IOT303', color: '#0D9488' }
     ],
     notes: [
       {
@@ -69,12 +69,21 @@
   };
 
   // --- Storage Helper ---
-  const STORAGE_KEY = 'campusmate_vanilla_data';
+  const STORAGE_KEY = 'campusmate_vanilla_data_v2';
 
   function loadState() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : INITIAL_DATA;
+      const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('campusmate_vanilla_data');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed.profile) {
+          parsed.profile.displayName = 'Ayush Kumar';
+          parsed.profile.semester = 'Semester 3';
+          parsed.profile.branch = 'Internet of Things (IoT)';
+        }
+        return parsed;
+      }
+      return INITIAL_DATA;
     } catch (e) {
       return INITIAL_DATA;
     }
