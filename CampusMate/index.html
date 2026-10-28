@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusMate — AI-Powered Smart Student Study Hub</title>
+  <meta name="description" content="CampusMate is an all-in-one student productivity hub with notes management, past questions, rule-based revision planner, exam countdown, and Pomodoro timer.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="light-theme">
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar-container">
+      <div class="brand-zone">
+        <button id="mobileMenuBtn" class="mobile-toggle" aria-label="Toggle Navigation">☰</button>
+        <div class="brand-mark">
+          <span class="brand-icon">🎓</span>
+          <span class="brand-text">CampusMate</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#dashboard" class="nav-link active" data-tab="dashboard">Dashboard</a>
+        <a href="#notes" class="nav-link" data-tab="notes">Notes</a>
+        <a href="#pyq" class="nav-link" data-tab="pyq">PYQ Library</a>
+        <a href="#planner" class="nav-link" data-tab="planner">Revision Planner</a>
+        <a href="#exams" class="nav-link" data-tab="exams">Exams</a>
+        <a href="#pomodoro" class="nav-link" data-tab="pomodoro">Pomodoro</a>
+      </nav>
+
+      <div class="action-zone">
+        <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
+        <button id="quickProfileBtn" class="profile-badge">
+          <span class="profile-avatar" id="topAvatar">A</span>
+          <span class="profile-name" id="topName">Alex</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- App Layout -->
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-kicker">
+        <span class="kicker-badge">STUDENT WORKSPACE</span>
+        <div class="kicker-sub" id="sidebarDegree">CS & Engineering · Sem 5</div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="side-btn active" data-tab="dashboard">
+          <span>📊 Dashboard</span>
+        </button>
+        <button class="side-btn" data-tab="notes">
+          <span>📚 Subjects & Notes</span>
+          <span class="badge" id="badgeNotesCount">0</span>
+        </button>
+        <button class="side-btn" data-tab="pyq">
+          <span>📝 PYQ Library</span>
+          <span class="badge" id="badgePyqCount">0</span>
+        </button>
+        <button class="side-btn" data-tab="planner">
+          <span>📅 Revision Planner</span>
+          <span class="badge pending-badge" id="badgePendingCount">0</span>
+        </button>
+        <button class="side-btn" data-tab="exams">
+          <span>⏳ Exam Countdown</span>
+          <span class="badge" id="badgeExamsCount">0</span>
+        </button>
+        <button class="side-btn" data-tab="pomodoro">
+          <span>⏱️ Pomodoro Studio</span>
+        </button>
+        <button class="side-btn" data-tab="analytics">
+          <span>📈 Study Analytics</span>
+        </button>
+        <button class="side-btn" data-tab="settings">
+          <span>⚙️ Profile & Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="storage-tag">Offline Storage (Local)</div>
+        <p class="footer-credit">CampusMate — Built for Students</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Canvas -->
+    <main class="main-viewport">
+      <!-- Section: Dashboard -->
+      <section id="section-dashboard" class="tab-section active">
+        <div class="welcome-card">
+          <div class="welcome-left">
+            <span class="welcome-kicker" id="dashGreetingDate">TODAY</span>
+            <h1 id="dashGreetingName">Welcome back, Student!</h1>
+            <p id="dashGreetingSub">Track syllabus revisions, upcoming exam countdowns, and past papers.</p>
+          </div>
+          <div class="welcome-actions">
+            <button class="btn btn-secondary" id="dashNewNoteBtn">+ New Note</button>
+            <button class="btn btn-secondary" id="dashNewTaskBtn">+ Revision Task</button>
+            <button class="btn btn-primary" id="dashStartTimerBtn">Start Focus</button>
+          </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="metric-grid">
+          <div class="metric-card" data-tab-nav="notes">
+            <span class="metric-label">Total Subjects</span>
+            <div class="metric-val" id="kpiSubjects">0</div>
+            <span class="metric-hint">Enrolled</span>
+          </div>
+          <div class="metric-card" data-tab-nav="notes">
+            <span class="metric-label">Total Notes</span>
+            <div class="metric-val" id="kpiNotes">0</div>
+            <span class="metric-hint">Saved</span>
+          </div>
+          <div class="metric-card" data-tab-nav="planner">
+            <span class="metric-label">Pending Revision</span>
+            <div class="metric-val warning" id="kpiPending">0</div>
+            <span class="metric-hint">To revise</span>
+          </div>
+          <div class="metric-card" data-tab-nav="exams">
+            <span class="metric-label">Upcoming Exams</span>
+            <div class="metric-val" id="kpiExams">0</div>
+            <span class="metric-hint">Scheduled</span>
+          </div>
+          <div class="metric-card" data-tab-nav="analytics">
+            <span class="metric-label">Study Progress</span>
+            <div class="metric-val success" id="kpiProgress">0%</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" id="kpiProgressFill" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exam Countdown Banner -->
+        <div class="exam-hero-banner" id="dashExamHero">
+          <div class="hero-left">
+            <div class="hero-date-block">
+              <span id="heroExamMonth">NOV</span>
+              <span id="heroExamDay" class="day-num">04</span>
+            </div>
+            <div>
+              <div class="hero-tag" id="heroExamSubject">Subject</div>
+              <h3 id="heroExamTitle">Upcoming Exam Target</h3>
+              <p class="hero-meta" id="heroExamVenue">Venue & Time</p>
+            </div>
+          </div>
+          <div class="hero-right">
+            <span class="hero-countdown-label">Time Remaining</span>
+            <div class="hero-countdown-value" id="heroExamDaysLeft">0 Days Left</div>
+          </div>
+        </div>
+
+        <!-- 2-Column Split: Priority Tasks & Recent Notes -->
+        <div class="split-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Priority Revision Topics</h2>
+              <button class="text-btn" data-tab-nav="planner">Full Planner →</button>
+            </div>
+            <div id="dashTodayTasksList" class="item-list"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Recent Study Notes</h2>
+              <button class="text-btn" data-tab-nav="notes">All Notes →</button>
+            </div>
+            <div id="dashRecentNotesList" class="item-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Notes & Subjects -->
+      <section id="section-notes" class="tab-section">
+        <div class="section-header">
+          <div>
+            <h1>Subjects & Study Notes</h1>
+            <p>Organize academic concepts, search keywords, and export plain-text summaries.</p>
+          </div>
+          <div class="header-btns">
+            <button class="btn btn-secondary" id="openManageSubjectsBtn">Manage Subjects</button>
+            <button class="btn btn-primary" id="openAddNoteBtn">+ New Note</button>
+          </div>
+        </div>
+
+        <div class="filter-strip" id="subjectFilterStrip"></div>
+
+        <div class="search-bar-row">
+          <input type="text" id="notesSearchInput" class="input" placeholder="Search notes by title, topic, or content...">
+          <button class="btn btn-filter" id="filterFavsBtn">⭐ Favorites</button>
+        </div>
+
+        <div class="notes-grid" id="notesContainer"></div>
+      </section>
+
+      <!-- Section: PYQ Library -->
+      <section id="section-pyq" class="tab-section">
+        <div class="section-header">
+          <div>
+            <h1>Previous-Year Questions (PYQ)</h1>
+            <p>University exam questions organized by subject, unit, year, and model answers.</p>
+          </div>
+          <button class="btn btn-primary" id="openAddPyqBtn">+ Add Question</button>
+        </div>
+
+        <div class="pyq-filters">
+          <input type="text" id="pyqSearchInput" class="input" placeholder="Search questions by concept or keyword...">
+          <div class="filter-row">
+            <select id="pyqSubjectFilter" class="input"></select>
+            <select id="pyqUnitFilter" class="input">
+              <option value="all">All Units</option>
+              <option value="Unit 1">Unit 1</option>
+              <option value="Unit 2">Unit 2</option>
+              <option value="Unit 3">Unit 3</option>
+              <option value="Unit 4">Unit 4</option>
+              <option value="Unit 5">Unit 5</option>
+            </select>
+            <select id="pyqYearFilter" class="input">
+              <option value="all">All Years</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+            </select>
+            <button class="btn btn-filter" id="pyqImportantBtn">⭐ High Weightage</button>
+          </div>
+        </div>
+
+        <div class="pyq-list" id="pyqContainer"></div>
+      </section>
+
+      <!-- Section: Revision Planner -->
+      <section id="section-planner" class="tab-section">
+        <div class="section-header">
+          <div>
+            <h1>Smart Revision Planner</h1>
+            <p>Rule-based weighted scheduling with automated urgency detection.</p>
+          </div>
+          <button class="btn btn-primary" id="openAddTaskBtn">+ Add Topic</button>
+        </div>
+
+        <div class="progress-panel">
+          <div class="progress-title-row">
+            <span>Overall Syllabus Revision Progress</span>
+            <span id="plannerProgressPct">0%</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="plannerProgressBar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="filter-row planner-filters">
+          <div class="btn-group">
+            <button class="btn-sub active" data-task-filter="all">All</button>
+            <button class="btn-sub" data-task-filter="pending">Pending</button>
+            <button class="btn-sub" data-task-filter="overdue">Overdue</button>
+            <button class="btn-sub" data-task-filter="completed">Done</button>
+          </div>
+          <select id="plannerSubjectFilter" class="input"></select>
+        </div>
+
+        <div class="task-list" id="plannerTasksContainer"></div>
+      </section>
+
+      <!-- Section: Exam Countdown -->
+      <section id="section-exams" class="tab-section">
+        <div class="section-header">
+          <div>
+            <h1>Exam Countdown & Schedule</h1>
+            <p>Track mid-terms, final exams, target dates, and venues.</p>
+          </div>
+          <button class="btn btn-primary" id="openAddExamBtn">+ Schedule Exam</button>
+        </div>
+
+        <div class="exams-grid" id="examsContainer"></div>
+      </section>
+
+      <!-- Section: Pomodoro Timer -->
+      <section id="section-pomodoro" class="tab-section">
+        <div class="section-header">
+          <div>
+            <h1>Pomodoro Focus Studio</h1>
+            <p>Timed study intervals with native Web Audio chime and session counters.</p>
+          </div>
+        </div>
+
+        <div class="pomodoro-box">
+          <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="focus">Focus (25m)</button>
+            <button class="mode-tab" data-mode="shortBreak">Short Break (5m)</button>
+            <button class="mode-tab" data-mode="longBreak">Long Break (15m)</button>
+          </div>
+
+          <div class="timer-display" id="timerDigital">25:00</div>
+          <div class="timer-sub" id="timerStatusLabel">Ready to Study</div>
+
+          <div class="timer-actions">
+            <button class="btn btn-icon" id="timerResetBtn" title="Reset">↺</button>
+            <button class="btn btn-primary btn-large" id="timerToggleBtn">Start Focus</button>
+            <button class="btn btn-icon" id="timerSoundBtn" title="Toggle Sound">🔊</button>
+          </div>
+
+          <div class="task-binding">
+            <label>Linked Revision Topic</label>
+            <select id="timerTaskSelect" class="input"></select>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-box">
+            <span class="label">Sessions Completed</span>
+            <div class="num" id="pomoCount">0</div>
+          </div>
+          <div class="stat-box">
+            <span class="label">Total Focused Time</span>
+            <div class="num" id="pomoHours">0 hrs</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Study Analytics -->
+      <section id="section-analytics" class="tab-section">
+        <div class="section-header">
+          <div>
+            <h1>Study Analytics</h1>
+            <p>Grounded strictly in actual stored student activity and tasks.</p>
+          </div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-card">
+            <span class="metric-label">Completed Tasks</span>
+            <div class="metric-val success" id="analyticsCompleted">0</div>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Pending Tasks</span>
+            <div class="metric-val warning" id="analyticsPending">0</div>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Overdue Tasks</span>
+            <div class="metric-val danger" id="analyticsOverdue">0</div>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Completion Rate</span>
+            <div class="metric-val" id="analyticsRate">0%</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Subject Syllabus Coverage</h2>
+          <div id="analyticsSubjectBars" class="subject-bars-list"></div>
+        </div>
+      </section>
+
+      <!-- Section: Profile & Settings -->
+      <section id="section-settings" class="tab-section">
+        <div class="section-header">
+          <div>
+            <h1>Student Profile & Storage Settings</h1>
+            <p>Manage local data backup, restore demo records, and update profile.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Academic Profile</h2>
+          <form id="profileForm" class="form-grid">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="profName" class="input" required>
+            </div>
+            <div class="form-group">
+              <label>College / University</label>
+              <input type="text" id="profCollege" class="input">
+            </div>
+            <div class="form-group">
+              <label>Current Semester</label>
+              <select id="profSemester" class="input">
+                <option value="Semester 1">Semester 1</option>
+                <option value="Semester 2">Semester 2</option>
+                <option value="Semester 3">Semester 3</option>
+                <option value="Semester 4">Semester 4</option>
+                <option value="Semester 5">Semester 5</option>
+                <option value="Semester 6">Semester 6</option>
+                <option value="Semester 7">Semester 7</option>
+                <option value="Semester 8">Semester 8</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Branch / Major</label>
+              <input type="text" id="profBranch" class="input">
+            </div>
+            <div class="form-group col-span-2">
+              <button type="submit" class="btn btn-primary">Save Profile</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <h2>Data Portability & Backup</h2>
+          <p class="panel-sub">Download your notes and tasks as a JSON file, or restore a previous backup.</p>
+          <div class="btn-row">
+            <button class="btn btn-secondary" id="exportBackupBtn">📥 Export JSON Backup</button>
+            <label class="btn btn-secondary">
+              📤 Import JSON Backup
+              <input type="file" id="importBackupInput" accept=".json" style="display:none;">
+            </label>
+          </div>
+        </div>
+
+        <div class="panel danger-panel">
+          <h2>Reset Data</h2>
+          <p class="panel-sub">Restore default university sample records or wipe local storage.</p>
+          <div class="btn-row">
+            <button class="btn btn-secondary" id="resetDemoDataBtn">Reset Demo Data</button>
+            <button class="btn btn-danger" id="wipeAllDataBtn">Erase All Data</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Note Reader Modal -->
+  <div class="modal-backdrop" id="noteReaderModal">
+    <div class="modal-content modal-large">
+      <div class="modal-header">
+        <div>
+          <span class="modal-tag" id="readerSubjectTag">Subject</span>
+          <h2 id="readerTitle">Note Title</h2>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary btn-sm" id="readerDownloadBtn">Download .txt</button>
+          <button class="close-btn" id="closeReaderBtn">✕</button>
+        </div>
+      </div>
+      <div class="modal-body" id="readerBody"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
